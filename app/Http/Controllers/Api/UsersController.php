@@ -5,56 +5,87 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-        return User::all();
+//    public function index()
+//    {
+//        //
+//        return User::all();
+//    }
+
+    public function register(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name'=>'required|string',
+            'email'=>'required|string|email|unique:users',
+            'password'=>'required|min:8'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+         return response()->json([
+             'message' => 'User Created ',
+         ]);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-        $user = User::create($request->all());
+    public function login(Request $request){
+        $loginUserData = $request->validate([
+            'email'=>'required|string|email',
+            'password'=>'required|min:8'
+        ]);
+        $user = User::where('email',$loginUserData['email'])->first();
+        if(!$user || !Hash::check($loginUserData['password'],$user->password)){
+            return response()->json([
+                'message' => 'Invalid Credentials'
+            ],401);
+        }
+        $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
+        return response()->json([
+            'access_token' => $token,
+        ]);
+    }
 
-        return response()->json($user, 201);
+    public function logout(){
+        auth()->user()->tokens()->delete();
+        return response()->json([
+            "message"=>"logged out"
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
-    {
-        //
-        return response()->json($user);
-    }
+//    public function show(User $user)
+//    {
+//        //
+//        return response()->json($user);
+//    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
-    {
-        //
-        $user->update($request->all());
+//    public function update(Request $request, User $user)
+//    {
+//        //
+//        $user->update($request->all());
+//
+//        return response()->json($user);
+//    }
 
-        return response()->json($user);
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
-        $user->delete();
-        return response()->json(null, 204);
-    }
 }
