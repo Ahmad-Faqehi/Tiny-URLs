@@ -13,11 +13,11 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-//    public function index()
-//    {
-//        //
-//        return User::all();
-//    }
+    public function index()
+    {
+        //
+        return User::all();
+    }
 
     public function register(Request $request){
 
@@ -79,13 +79,13 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-//    public function update(Request $request, User $user)
-//    {
-//        //
-//        $user->update($request->all());
-//
-//        return response()->json($user);
-//    }
+    public function test()
+    {
+        //
+
+
+        return "hello world";
+    }
 
 
 }

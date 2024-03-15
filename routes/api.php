@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UsersController;
+use App\Http\Controllers\Api\UrlsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,8 @@ use App\Http\Controllers\Api\UsersController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('abc',[UrlsController::class,'index']);
+
 Route::post('register',[UsersController::class,'register']);
 Route::post('login',[UsersController::class,'login']);
 Route::post('logout',[UsersController::class,'logout'])
