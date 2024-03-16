@@ -15,7 +15,7 @@ use App\Http\Controllers\Api\UrlsController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('abc',[UrlsController::class,'index']);
+Route::get('dub',[UrlsController::class,'index']);
 
 Route::post('register',[UsersController::class,'register']);
 Route::post('login',[UsersController::class,'login']);
