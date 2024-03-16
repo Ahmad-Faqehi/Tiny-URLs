@@ -37,6 +37,8 @@ class UsersController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        # Todo: make auto login after register.
+
          return response()->json([
              'message' => 'User Created ',
          ]);

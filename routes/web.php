@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\UrlsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,5 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/{uri}',[UrlsController::class,'show']);
 
-Route::get('/', function () {
-    return view('welcome');
-});
