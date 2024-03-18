@@ -7,8 +7,10 @@ use App\Models\Urls;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Benchmark;
 
 class UrlsController extends Controller
 {
@@ -40,8 +42,6 @@ class UrlsController extends Controller
             $user_id = auth('sanctum')->user()->id;
 
 
-
-
         $randomUri = Str::random(6);
         #Todo: check if $randomUri isn't already exist on db
 
@@ -70,12 +70,59 @@ class UrlsController extends Controller
      */
     public function show(string $uri)
     {
-        //
-        if(!empty($uri))
-            $link = Urls::where('uri_token', '=' ,$uri)->firstOrFail();
-            if ($link)
-                return Redirect::to($link->original_url);
+        Benchmark::dd([
+            'db' => fn() => Urls::where('uri_token', '=' ,$uri)->firstOrFail(),
+            'redis' => fn() => Redis::get('url_' . $uri)
+        ], 3);
 
+
+        //
+        $isRedis = $this->isRedisReady();
+        if(!empty($uri))
+
+
+            #TODO: search uri in redis
+            if ($isRedis)
+                $link =  Redis::get('url_' . $uri);
+
+                if (isset($link)){
+                     return response()->json([
+                        'status_code' => 201,
+                        'message' => 'Fetched from redis',
+                        'url' => $link
+                    ]);
+                }else{
+                    $link = Urls::where('uri_token', '=' ,$uri)->firstOrFail();
+                    if($isRedis)
+                        Redis::set('url_'.$link->uri_token,$link->original_url);
+                    return response()->json([
+                        'status_code' => 201,
+                        'message' => 'Fetched from db',
+                        'data' => $link->original_url
+                    ]);
+                }
+
+
+
+//            $link = Urls::where('uri_token', '=' ,$uri)->firstOrFail();
+//            if ($link)
+//                return Redirect::to($link->original_url);
+
+        return  false;
+    }
+
+    public function isRedisReady($connection = null)
+    {
+        $isReady = true;
+        try {
+            $redis = Redis::connection($connection);
+            $redis->connect();
+            $redis->disconnect();
+        } catch (\Exception $e) {
+            $isReady = false;
+        }
+
+        return $isReady;
     }
 
     /**

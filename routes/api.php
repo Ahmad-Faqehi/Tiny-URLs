@@ -15,6 +15,8 @@ use App\Http\Controllers\Api\UrlsController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
 Route::post('create_short',[UrlsController::class,'store']);
 
 

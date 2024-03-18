@@ -13,5 +13,5 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/{uri}',[UrlsController::class,'show']);
+Route::get('/s/{uri}',[UrlsController::class,'show']);
 

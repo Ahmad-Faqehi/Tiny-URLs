@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
@@ -13,11 +14,13 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-        return User::all();
-    }
+//    public function index()
+//    {
+//        //
+////       echo "123";
+//     echo  Redis::get('urls_');
+////        return User::all();
+//    }
 
     public function register(Request $request){
 
