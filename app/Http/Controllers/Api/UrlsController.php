@@ -140,4 +140,10 @@ class UrlsController extends Controller
     {
         //
     }
+
+    public function test()
+    {
+        //
+        return "Hello World";
+    }
 }
