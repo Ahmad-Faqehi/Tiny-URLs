@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Benchmark;
+use App\Models\Config;
+
 
 class UrlsController extends Controller
 {
+    public bool $useRedis = true;
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +45,7 @@ class UrlsController extends Controller
             $user_id = auth('sanctum')->user()->id;
 
 
-        $randomUri = Str::random(6);
+        $randomUri = Str::random(3);
         #Todo: check if $randomUri isn't already exist on db
 
 
@@ -53,6 +56,8 @@ class UrlsController extends Controller
         ]);
 
         if ($url):
+            if ($this->useRedis)
+                Redis::set('url_'.$randomUri,$request->url);
             return response()->json([
                 'status' => 'successfully',
                 'uri_token' => $randomUri
@@ -70,43 +75,24 @@ class UrlsController extends Controller
      */
     public function show(string $uri)
     {
-        Benchmark::dd([
-            'db' => fn() => Urls::where('uri_token', '=' ,$uri)->firstOrFail(),
-            'redis' => fn() => Redis::get('url_' . $uri)
-        ], 3);
 
 
-        //
-        $isRedis = $this->isRedisReady();
+        $isRedis = $this->useRedis;
         if(!empty($uri))
-
-
-            #TODO: search uri in redis
+            #TO search uri in redis
             if ($isRedis)
                 $link =  Redis::get('url_' . $uri);
 
                 if (isset($link)){
-                     return response()->json([
-                        'status_code' => 201,
-                        'message' => 'Fetched from redis',
-                        'url' => $link
-                    ]);
+                    return Redirect::to($link);
+
                 }else{
                     $link = Urls::where('uri_token', '=' ,$uri)->firstOrFail();
                     if($isRedis)
                         Redis::set('url_'.$link->uri_token,$link->original_url);
-                    return response()->json([
-                        'status_code' => 201,
-                        'message' => 'Fetched from db',
-                        'data' => $link->original_url
-                    ]);
+                    return Redirect::to($link->original_url);
                 }
 
-
-
-//            $link = Urls::where('uri_token', '=' ,$uri)->firstOrFail();
-//            if ($link)
-//                return Redirect::to($link->original_url);
 
         return  false;
     }
@@ -119,6 +105,18 @@ class UrlsController extends Controller
             $redis->connect();
             $redis->disconnect();
         } catch (\Exception $e) {
+            $isReady = false;
+        }
+
+        return $isReady;
+    }
+
+    public function isRedisReady_db()
+    {
+        $isReady = true;
+        if (boolval(Config::where('name', '=', 'redis')->firstOrFail()->status)){
+            $isReady = true;
+        }else{
             $isReady = false;
         }
 

@@ -15,3 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/s/{uri}',[UrlsController::class,'show']);
 
+Route::view('/{any?}', 'welcome')
+    ->name('homePage')
+    ->where('any', '.*');
