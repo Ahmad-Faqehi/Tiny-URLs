@@ -48,6 +48,10 @@ class UrlsController extends Controller
         $randomUri = Str::random(3);
         #Todo: check if $randomUri isn't already exist on db
 
+        while (  Urls::where('uri_token', '=' ,$randomUri)->get()->count() == 1 ){
+
+            $randomUri = Str::random(3);
+        }
 
         $url = Urls::create([
             'original_url' => $request->url,
