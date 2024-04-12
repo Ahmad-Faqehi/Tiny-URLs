@@ -1,0 +1,46 @@
+name: Unit Tests with Database
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: tiny_urls
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up PHP
+      uses: hivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+        coverage: none
+        
+    - name: Install dependencies
+      run: composer install -n --prefer-dist
+        
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        timeout 30 bash -c 'until nc -z localhost 5432; do sleep 1; done'
+        
+    # - name: Run unit tests
+    #   run: |
+    #     pytest --cov=your_project tests/  # Run your unit tests
