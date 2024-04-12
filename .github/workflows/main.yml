@@ -40,7 +40,18 @@ jobs:
     - name: Wait for PostgreSQL to be ready
       run: |
         timeout 30 bash -c 'until nc -z localhost 5432; do sleep 1; done'
+
+
+    - name: Prepare Laravel Application
+      run: |
+        cp .env.example .env
+        echo "DB_DATABASE=tiny_urls" >> .env
+        echo "DB_USERNAME=postgres" >> .env
+        echo "DB_PASSWORD=postgres" >> .env
+        echo "DB_PORT=5432" >> .env
+        echo "DB_HOST=localhost" >> .env
+        php artisan key:generate
         
-    # - name: Run unit tests
-    #   run: |
-    #     pytest --cov=your_project tests/  # Run your unit tests
+    - name: Run migrate
+      run: |
+        php artisan migrate
