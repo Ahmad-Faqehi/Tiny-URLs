@@ -65,3 +65,8 @@ jobs:
     - name: Run npm build
       run: |
         npm run build
+
+
+    - name: Run php test
+      run: |
+         php artisan test
