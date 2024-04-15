@@ -1,10 +1,7 @@
-import './bootstrap';
-import { createApp } from "vue/dist/vue.esm-bundler.js";
-import Example from "./components/ExampleComponent.vue"
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import './assets/scss/tailwind.scss'
+import './assets/css/materialdesignicons.min.css'
 
-const app = createApp({
-    components: {
-        Example,
-    }
-});
-app.mount("#app");
+createApp(App).use(router).mount('#app')

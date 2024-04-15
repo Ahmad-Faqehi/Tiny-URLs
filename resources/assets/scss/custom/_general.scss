@@ -1,0 +1,46 @@
+/*********************************/
+/*             General           */
+/*===============================*/
+html {
+    @apply scroll-smooth font-libre_franklin;
+}
+
+body {
+    @apply text-[15px] text-black;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 p span{
+    @apply font-libre_franklin;
+}
+
+ul li{
+    -webkit-margin-start: 0.25rem;
+            margin-inline-start: 0.25rem;
+  }
+  ul li:first-child{
+    -webkit-margin-start: 0px;
+            margin-inline-start: 0px;
+  }
+
+  a{
+    cursor: pointer !important;
+  }
+
+  @media (max-width: 640px) {
+    iframe{
+        width: 700px !important;
+        height: 500px !important;
+    }
+}
+@media (max-width: 425px) {
+    iframe{
+        width: 360px !important;
+        height: 260px !important;
+    }
+}
+@media (max-width: 375px) {
+    iframe{
+        width: 100% !important;
+        height: auto !important;
+    }
+}
