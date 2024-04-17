@@ -12,18 +12,18 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
   />
-  
+
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   @vite('resources/js/app.js')
   @vite('resources/css/app.css')
-    <title>Upcover - Vue Js Business Landing Page Template</title>
+    <title>Tiny Urls</title>
   </head>
   <body class="text-base text-black dark:text-white bg-white dark:bg-slate-900">
     <noscript>
       <strong>We're sorry but Tiny URLs doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-    
+
     <!-- built files will be auto injected -->
   </body>
 </html>
