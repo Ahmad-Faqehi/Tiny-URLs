@@ -186,7 +186,7 @@ try {
 
     },
     testt(url){
-      this.inputValue = 'https://a-cofe.com/s/'+url;
+      this.inputValue = import.meta.env.VITE_API_PUBLIC_KEY+'/s/'+url;
     },
     copyToClipboard() {
       // Select the input field
