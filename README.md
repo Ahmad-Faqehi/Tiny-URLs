@@ -1,4 +1,4 @@
-<center>
+<div align="center">
 
 # Tiny Urls
 [![LinkedIn][linkedin-shield]][linkedin-url]
@@ -8,7 +8,7 @@
 <a href="https://hammerhead-app-9hhhd.ondigitalocean.app/">Demo</a>
 
 
-</center>
+</div>
 
 ## About Project
 
