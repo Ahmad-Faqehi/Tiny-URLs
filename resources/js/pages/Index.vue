@@ -64,10 +64,10 @@
                 </div><!--end grid-->
             </div><!--end container-->
         </section>
-        
+
 </div>
-        
- 
+
+
 </template>
 
 <script>
@@ -118,7 +118,7 @@ export default {
   methods: {
     async greet() {
       let url = document.getElementById('url').value;
-      
+
       if (!isValidURL(url)){
         this.err_msg = true
         return false
@@ -138,23 +138,30 @@ try {
           url: url
         };
 
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    }
+
         // Send a POST request
-        const response = await axios.post(import.meta.env.VITE_API_PUBLIC_KEY+'/api/create_short', data);
+        const response = await axios.post(import.meta.env.VITE_API_PUBLIC_KEY+'/api/create_short', data, {
+            headers: headers
+        });
 
         // Handle the response
         // console.log('Response:', response);
 
 
         if (response.status == 200){
-          // Todo : append the response.data.uri_token 
+          // Todo : append the response.data.uri_token
           console.log(response.data.uri_token)
           this.show_form = false
           this.show_result = true
 
           this.testt(response.data.uri_token)
-          
-         
-         
+
+
+
 
         }
 
@@ -236,7 +243,7 @@ try {
         transform: rotate(360deg);
     }
     }
-    
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;
