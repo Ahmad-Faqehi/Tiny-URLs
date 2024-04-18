@@ -17,6 +17,8 @@
   @vite('resources/js/app.js')
   @vite('resources/css/app.css')
     <title>Tiny Urls</title>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6249647619521156"
+              crossorigin="anonymous"></script>
   </head>
   <body class="text-base text-black dark:text-white bg-white dark:bg-slate-900">
     <noscript>
