@@ -5,7 +5,7 @@
 [![Twitter][twitter-shield]][twittwe-url]
 [![Twitter][github-shield]][github-url]
 
-<a href="https://hammerhead-app-9hhhd.ondigitalocean.app/">Demo</a>
+<a href="https://a-cofe.com/">Demo</a>
 
 
 </div>
