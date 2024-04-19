@@ -16,7 +16,7 @@ use App\Models\Config;
 
 class UrlsController extends Controller
 {
-    public bool $useRedis = true;
+    public bool $useRedis = false;
     /**
      * Display a listing of the resource.
      */
