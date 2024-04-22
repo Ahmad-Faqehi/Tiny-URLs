@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('analysis', function (Blueprint $table) {
+        Schema::create('tracker', function (Blueprint $table) {
             $table->id();
             $table->string('uri_id');
             $table->index('uri_id');
             $table->foreign('uri_id')->references('uri_token')->on('urls')->onDelete('cascade');
-            $table->integer('num_click');
             $table->timestamps();
         });
     }

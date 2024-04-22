@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Benchmark;
 use App\Models\Config;
-
+use App\Models\Tracker;
 
 class UrlsController extends Controller
 {
@@ -88,16 +88,22 @@ class UrlsController extends Controller
                 $link =  Redis::get('url_' . $uri);
 
                 if (isset($link)){
+                    Tracker::create([
+                        'uri_id' => $uri
+                    ]);
+
                     return Redirect::to($link);
 
                 }else{
                     $link = Urls::where('uri_token', '=' ,$uri)->firstOrFail();
                     if($isRedis)
                         Redis::set('url_'.$link->uri_token,$link->original_url);
+
+                    Tracker::create([
+                      'uri_id' => $uri
+                    ]);
                     return Redirect::to($link->original_url);
                 }
-
-
         return  false;
     }
 
@@ -125,6 +131,11 @@ class UrlsController extends Controller
         }
 
         return $isReady;
+    }
+
+    public function trackClick($uri){
+        #Todo: check if is first click.
+            #todo if it's first, insert recured 
     }
 
     /**
