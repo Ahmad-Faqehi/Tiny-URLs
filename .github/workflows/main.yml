@@ -22,6 +22,13 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      
+      redis:
+        image: redis
+        ports:
+        - 6379:6379
+        options: --entrypoint redis-server
+
 
     steps:
     - name: Checkout code
@@ -39,8 +46,11 @@ jobs:
         
     - name: Wait for PostgreSQL to be ready
       run: |
-        cat /etc/hosts
         timeout 30 bash -c 'until nc -z localhost 5432; do sleep 1; done'
+
+    - name: Wait for Redis to be ready
+      run: |
+        timeout 30 bash -c 'until nc -z localhost 6379; do sleep 1; done'
 
 
     - name: Prepare Laravel Application
