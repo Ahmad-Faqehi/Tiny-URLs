@@ -88,9 +88,9 @@ class UrlsController extends Controller
                 $link =  Redis::get('url_' . $uri);
 
                 if (isset($link)){
-                    Tracker::create([
-                        'uri_id' => $uri
-                    ]);
+                    // Tracker::create([
+                    //     'uri_id' => $uri
+                    // ]);
 
                     return Redirect::to($link);
 
@@ -99,9 +99,9 @@ class UrlsController extends Controller
                     if($isRedis)
                         Redis::set('url_'.$link->uri_token,$link->original_url);
 
-                    Tracker::create([
-                      'uri_id' => $uri
-                    ]);
+                    // Tracker::create([
+                    //   'uri_id' => $uri
+                    // ]);
                     return Redirect::to($link->original_url);
                 }
         return  false;
